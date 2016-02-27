@@ -1,68 +1,161 @@
 <html>
-  <head>
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="{{  url_for('static', filename='style.css') }}" type="text/css"/>
-    <title>Rank</title>
-  </head>
-  <body>
-    <h1>Reports</h1>
-    <div id="map"></div>
-	<script>
-    var map;
-    var geocoder;
-    var markers = [];
-	function initMap() {
-        var reports = {{ reports|tojson|safe }};
-		//var myLatLng = {lat: -25.363, lng: 131.044};
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="{{  url_for('static', filename='style.css') }}" type="text/css"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">    
+		<script src="https://cdn.jsdelivr.net/lodash/4.5.1/lodash.js">
+		</script>
+		<title>Rank</title>
+	</head>
+	<body>
+		<h1>Reports</h1>
+		<div id="map"></div>
+		<script>
+var map;
+var geocoder;
+var markers = [];
+var reports;
 
-        geocoder = new google.maps.Geocoder();
-		map = new google.maps.Map(document.getElementById('map'), {
-			zoom: 4,
-            center: {lat: 37.09024, lng: -95.712891}
-		});
+function loadJSON(url, callback) {   
 
-        for( var report of reports ) {
-            if(!('zip_code' in report)) {
-                alert("Improperly formed report!");
-                continue;
-            }
-            geocoder.geocode({'address': report.zip_code, 'region':'us'}, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    markers.push(new google.maps.Marker({
-                        position: results[0].geometry.location,
-                        zip_code: report.zip_code,
-                        map: map,
-
-                    }));
-                    
-                    
-                } else {
-                    alert("Geocode failed: " + status);
-                }
-            });
+    var xobj = new XMLHttpRequest();
+    xobj.overrideMimeType("application/json");
+    xobj.open('GET', url, true); 
+    xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4 && xobj.status == "200") {
+            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+            callback(xobj.responseText);
         }
+    };
+    xobj.send(null);  
+}
 
-        /*
-        var markers = reports.map(function(report) {
-            return new google.maps.Marker({
-                position: report.latlong,
-                map: map,
-                title: '
-            });
+var measurement_ranges;
+
+loadJSON("{{url_for('static', filename='measurement_ranges.json')}}", function(data) {
+    measurement_ranges = JSON.parse(data);
+});
+
+var over_limit = 2;
+var over_goal = 1;
+var under_goal = 0;
+
+function measurement_outside_range(measurement, value) {
+    if(measurement in measurement_ranges) {
+        if(value > measurement_ranges[measurement].limit) {
+            return over_limit;
+        } else {
+            if(value > measurement_ranges[measurement].goal) {
+                return over_goal; 
+            }
+            return under_goal;
+        }
+    } else 
+        return -1;
+}
+
+function measurement_unit(measurement) {
+    if(measurement in measurement_ranges) {
+        if('unit' in measurement_ranges[measurement]) {
+            return measurement_ranges[measurement].unit;
+        }
+        return 'PPM';
+    }
+
+    return '';
+}
+
+function get_icon_class(measurement, value) {
+    var measurement_status = measurement_outside_range(measurement, value);
+    switch(measurement_status) {
+        case under_goal:
+            return "fa-check under_limit";
+        case over_goal:
+            return "fa-exclamation over_goal";
+        case over_limit:
+            return "fa-close over_limit";
+        default:
+            return "";
+    }
+}
+
+function generate_content(report) {
+	//var qualityData =  
+		var contentString = '<div id="content">'+
+		'<h2 class="popoverHeading">'+ report.locality + '</h1>'+
+		'<div class="popoverContent">'+
+        '<div class="measurement-container">'+
+        '<div class="measurement-col"></div>'+
+        '<div class="measurement-col"></div>'+
+        '<div class="measurement-col"></div>';
+
+        console.log(report.measurements);
+
+        _.forOwn(report.measurements, function(value, key) {
+            contentString += '<div class="measurement-data">'+
+                '<div class="measurement-type measurement-cell">' + key + '</div>' +
+                '<div class="measurement-value measurement-cell">' + value + measurement_unit(key) + '</div>' + 
+                '<div class="measurement-icon measurement-cell">' + 
+                ' <i class="fa '+ get_icon_class(key, value) + '"></i></div>'+
+                '</div>';
         });
 
-		var marker = new google.maps.Marker({
-			position: myLatLng,
-			map: map,
-			title: 'Hello World!'
-		});
-        */
-	}
-	</script>
-    <div id="main">
-    </div>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&signed_in=true&callback=initMap">
-    </script>
-  </body>
+        contentString +=
+        '</div>'+
+		'<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+		'rock caves and ancient paintings. Uluru is listed as a World '+
+		'Heritage Site.'+
+        '</p>'+
+		'</div>'+
+		'</div>';
+
+	return contentString; 
+}
+
+function attach_infowindow(marker, report) {
+        var infowindow = new google.maps.InfoWindow({
+            content: generate_content(report),
+            maxWidth: 200
+        });
+        marker.addListener('click', function() {
+            infowindow.open(marker.get('map'), marker);
+        });
+}
+
+function initMap() {
+    reports = {{ reports|tojson|safe }};
+    //var myLatLng = {lat: -25.363, lng: 131.044};
+
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 4,
+        center: {lat: 37.09024, lng: -95.712891}
+    });
+
+    for( var report of reports ) {
+        var marker = new google.maps.Marker({
+            position: {lat:report.position.coordinates[0], lng:report.position.coordinates[1]},
+            locality: report.locality,
+            zip_code: report.zip_code,
+            map: map,
+        });
+
+        attach_infowindow(marker, report);
+
+        markers.push(marker);
+    };
+}
+
+// This is awful and I hate myself for doing this
+// needed to ensure that the measurement_range json file is loaded before we load markers
+function hackyInit() {
+    setTimeout(initMap, 10);
+}
+		</script>
+		<div id="main">
+		</div>
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&signed_in=true&callback=hackyInit">
+		</script>
+
+	</body>
 </html>

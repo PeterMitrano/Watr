@@ -17,10 +17,6 @@ application = Flask(__name__)
 
 @application.route('/')
 def get_root():
-    return render_template('index.html')
-
-@application.route('/map')
-def get_map():
     url = api + reportEndpoint
     request = requests.get(url)
     return render_template('map.html', reports=request.json(), api_key=api_key)

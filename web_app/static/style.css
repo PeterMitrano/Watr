@@ -7,6 +7,39 @@ body {
   height: 500px;
 }
 
+.under_limit {
+    color: #27ae60;
+}
+
+.over_goal {
+    color: #f39c12;
+}
+
+.over_limit {
+    color: #c0392b;
+}
+
+.measurement-container {
+    display: table;
+    border-collapse: collapse;
+    width:100%;
+}
+
+.measurement-data {
+    display: table-row;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px #000 solid;
+}
+
+.measurement-cell {
+    display: table-cell;
+}
+
+.measurement-col {
+    display: table-col;
+}
+
 h1 {
   text-align: center;
   font-size: 112px;
