@@ -29,7 +29,7 @@ public class ReportActivity extends Activity implements View.OnClickListener, As
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.submit_button){
-            submitFrame.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
+            submitFrame.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
             AsyncPoster poster = new AsyncPoster(report);
             poster.addListener(this);
             poster.execute();
@@ -42,11 +42,13 @@ public class ReportActivity extends Activity implements View.OnClickListener, As
             Snackbar.make(findViewById(android.R.id.content),
                     "Thank you! We've submitted your report",
                     Snackbar.LENGTH_LONG).show();
+            submitFrame.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         }
         else {
             Snackbar.make(findViewById(android.R.id.content),
                     "Whoops! Please connect to the internet.",
                     Snackbar.LENGTH_LONG).show();
+            submitFrame.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
         }
     }
 }

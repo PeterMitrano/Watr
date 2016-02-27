@@ -3,6 +3,7 @@ package watr.hack.watr;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,38 +12,14 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class SliderDialog extends DialogFragment implements SeekBar.OnSeekBarChangeListener {
+public class SliderDialog extends DialogFragment {
 
-    private int min, max, unit;
-    private String units;
     private SliderListener mListener;
     private SeekBar seekbar;
     private TextView label;
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (fromUser) {
-            mListener.onSliderUpdate(progress);
-        }
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) { }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) { }
-
     public interface SliderListener {
-        public void onSliderUpdate(int value);
-    }
-
-    public SliderDialog() {
-        if (getArguments() != null) {
-            min = getArguments().getInt("min");
-            max = getArguments().getInt("max");
-            unit = getArguments().getInt("unit");
-            units = getArguments().getString("units");
-        }
+        public void onSliderComplete(int value);
     }
 
     public void addListener(SliderListener listener) {
@@ -54,13 +31,22 @@ public class SliderDialog extends DialogFragment implements SeekBar.OnSeekBarCha
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
+        int min = getArguments().getInt("min");
+        int max = getArguments().getInt("max");
+        int unit = getArguments().getInt("unit");
+        String units = getArguments().getString("units");
         View layout = inflater.inflate(R.layout.slider_dialog, null);
         seekbar = (SeekBar) layout.findViewById(R.id.seekbar);
-        seekbar.setOnSeekBarChangeListener(this);
         label = (TextView) layout.findViewById(R.id.seekbar_label);
         label.setText(getArguments().getString("label"));
 
         builder.setView(layout);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mListener.onSliderComplete(seekbar.getProgress());
+            }
+        });
         return builder.create();
     }
 }
