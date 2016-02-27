@@ -2,17 +2,10 @@ var express = require('express');
 var mongo = require('mongodb');
 var MongoClient = require('mongodb').MongoClient;
 
-var api_keys = require('./api_keys.js');
-
 var geocoderProvider = 'google';
 var httpAdapter = 'http';
 
-var extra = {
-    //apiKey: api_keys.google_api_key, // for Mapquest, OpenCage, Google Premier
-    //formatter: null         // 'gpx', 'string', ...
-};
-var geocoder = require('node-geocoder')(geocoderProvider, httpAdapter, extra);
-//var geocoder = require('geocoder');
+var geocoder = require('node-geocoder')(geocoderProvider, httpAdapter, {});
 var bodyParser = require('body-parser');
 var app = express();
 
@@ -29,6 +22,8 @@ MongoClient.connect(url, function(err, database) {
 });
 
 app.post('/reports', function(req, res) {
+    console.log("Got a post");
+    console.log(req.body);
     var report = req.body;
     geocoder.geocode({address:report.zipcode, countryCode:'us'}, function(err, geo_res) {
         var geo_data = geo_res[0];
@@ -40,10 +35,15 @@ app.post('/reports', function(req, res) {
         };
         
         db.collection('reports', function(err, collection) {
+            if(err) {
+                res.status(500);
+                res.type('html');
+                res.send(err);
+            }
             collection.insert(mongo_report, {safe:true}, function(err, result) {
-                res.writeHead(200, "OK", {'Content-Type': 'text/html'});
-                res.end();
-                //res.status(200).end();
+                res.status(200);
+                res.type('html');
+                res.send("OK");
             });
         });
     });
