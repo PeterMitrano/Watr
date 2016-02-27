@@ -80,15 +80,17 @@ function get_icon_class(measurement, value) {
     }
 }
 
-function generate_content(report, locality) {
+function generate_content(report) {
 	//var qualityData =  
 		var contentString = '<div id="content">'+
-		'<h2 class="popoverHeading">'+ locality.short_name + '</h1>'+
+		'<h2 class="popoverHeading">'+ report.locality + '</h1>'+
 		'<div class="popoverContent">'+
         '<div class="measurement-container">'+
         '<div class="measurement-col"></div>'+
         '<div class="measurement-col"></div>'+
         '<div class="measurement-col"></div>';
+
+        console.log(report.measurements);
 
         _.forOwn(report.measurements, function(value, key) {
             contentString += '<div class="measurement-data">'+
@@ -111,73 +113,48 @@ function generate_content(report, locality) {
 	return contentString; 
 }
 
+function attach_infowindow(marker, report) {
+        var infowindow = new google.maps.InfoWindow({
+            content: generate_content(report),
+            maxWidth: 200
+        });
+        marker.addListener('click', function() {
+            infowindow.open(marker.get('map'), marker);
+        });
+}
+
 function initMap() {
-	reports = {{ reports|tojson|safe }};
-	//var myLatLng = {lat: -25.363, lng: 131.044};
+    reports = {{ reports|tojson|safe }};
+    //var myLatLng = {lat: -25.363, lng: 131.044};
 
-	geocoder = new google.maps.Geocoder();
-	map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 4,
-		center: {lat: 37.09024, lng: -95.712891}
-	});
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 4,
+        center: {lat: 37.09024, lng: -95.712891}
+    });
 
-	for( var report of reports ) {
-		if(!('zipcode' in report)) {
-			alert("Improperly formed report!");
-			continue;
-		}
-		geocoder.geocode({'address': report.zipcode, 'region':'us'}, function(results, status) {
-			console.log(results);
-			if (status == google.maps.GeocoderStatus.OK) {
-				var locality = _.find(results[0].address_components, function(component) {
-					return _.includes(component.types, "locality");
-				});
+    for( var report of reports ) {
+        var marker = new google.maps.Marker({
+            position: {lat:report.position.coordinates[0], lng:report.position.coordinates[1]},
+            locality: report.locality,
+            zip_code: report.zip_code,
+            map: map,
+        });
 
-				var marker = new google.maps.Marker({
-					position: results[0].geometry.location,
-					locality: locality,
-					zip_code: report.zip_code,
-					map: map,
-				});
+        attach_infowindow(marker, report);
 
-				var infowindow = new google.maps.InfoWindow({
-					content: generate_content(report, locality),
-					maxWidth: 200
-				});
+        markers.push(marker);
+    };
+}
 
-				marker.addListener('click', function() {
-					infowindow.open(map, marker);
-				});
-
-				markers.push(marker);
-
-
-			} else {
-				alert("Geocode failed: " + status);
-			}
-		});
-	}
-
-	/*
-	   var markers = reports.map(function(report) {
-	   return new google.maps.Marker({
-	   position: report.latlong,
-	   map: map,
-	   title: '
-	   });
-	   });
-
-	   var marker = new google.maps.Marker({
-	   position: myLatLng,
-	   map: map,
-	   title: 'Hello World!'
-	   });
-	 */
+// This is awful and I hate myself for doing this
+// needed to ensure that the measurement_range json file is loaded before we load markers
+function hackyInit() {
+    setTimeout(initMap, 10);
 }
 		</script>
 		<div id="main">
 		</div>
-		<script async defer src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&signed_in=true&callback=initMap">
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&signed_in=true&callback=hackyInit">
 		</script>
 
 	</body>
