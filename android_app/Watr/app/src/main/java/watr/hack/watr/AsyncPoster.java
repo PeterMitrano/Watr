@@ -12,25 +12,38 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by peter on 2/26/16.
  */
 public class AsyncPoster extends AsyncTask<Void, Void, Boolean> {
 
-    Report report;
+    private Report report;
+    private String responseString;
+    private List<PosterListener> listeners;
+
+    public interface PosterListener {
+
+        public void onCompleted(Boolean connected);
+
+    }
 
     public AsyncPoster(Report report) {
         this.report = report;
+        listeners = new ArrayList<PosterListener>();
+    }
+
+    public void addListener(PosterListener listener) {
+       listeners.add(listener);
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
 
-        String urlParameters = "quality=" + report.quality
-                + "&town=" + report.town + "&state=" + report.state;
-        byte[] postData = new byte[0];
-        postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+        byte[] postData;
+        postData = report.getParameterString().getBytes(StandardCharsets.UTF_8);
         int postDataLength = postData.length;
 
         String requestURL = "http://httpbin.org/post";
@@ -51,21 +64,25 @@ public class AsyncPoster extends AsyncTask<Void, Void, Boolean> {
             wr.write(postData);
 
             Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            String str = "";
             for (int c = in.read(); c != -1; c = in.read()) {
-                str += ((char)c);
+                responseString += ((char)c);
             }
-            Log.e("response", str);
+
+            Log.e("response", responseString);
+
+            return true;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return false;
     }
 
     public void onPostExecute(Boolean connected) {
-        Log.w("completed", "on post execute");
+        for (PosterListener listener : listeners) {
+            listener.onCompleted(connected);
+        }
     }
 }

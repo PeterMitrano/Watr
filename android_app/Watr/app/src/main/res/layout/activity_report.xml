@@ -16,6 +16,12 @@
         android:orientation="vertical"
         android:id="@+id/linearLayout">
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Water Quality"
+            android:id="@+id/selectQualityButton"/>
+
         <TextView
             android:id="@+id/townLabel"
             android:layout_width="match_parent"
