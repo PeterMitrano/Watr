@@ -1,7 +1,7 @@
 var express = require('express');
 var mongo = require('mongodb');
 var MongoClient = require('mongodb').MongoClient;
-
+var _ = require('lodash');
 var geocoderProvider = 'google';
 var httpAdapter = 'http';
 
@@ -13,7 +13,7 @@ var url = "mongodb://localhost:27017/watr";
 var db;
 
 app.use(bodyParser.json());
-
+app.use(bodyParser.text());
 MongoClient.connect(url, function(err, database) {
     db = database;
 
@@ -21,10 +21,7 @@ MongoClient.connect(url, function(err, database) {
     console.log("Listening on port 3000");
 });
 
-app.post('/reports', function(req, res) {
-    console.log("Got a post");
-    console.log(req.body);
-    var report = req.body;
+function write_report(report, res) {
     geocoder.geocode({address:report.zipcode, countryCode:'us'}, function(err, geo_res) {
         var geo_data = geo_res[0];
         var mongo_report = {
@@ -33,7 +30,7 @@ app.post('/reports', function(req, res) {
             zipcode: report.zipcode,
             measurements: report.measurements
         };
-        
+
         db.collection('reports', function(err, collection) {
             if(err) {
                 res.status(500);
@@ -47,6 +44,14 @@ app.post('/reports', function(req, res) {
             });
         });
     });
+}
+
+app.post('/reports', function(req, res) {
+    console.log("Got a post");
+    console.log(req.body);
+    var report = req.body; 
+
+    write_report(report, res);
 });
 
 app.get('/reports', function(req, res) {
@@ -55,4 +60,28 @@ app.get('/reports', function(req, res) {
             res.status(200).json(reports);
         });
     });
+});
+
+function parse_sms(sms) {
+    var lines = sms.split(/\r?\n/);
+    var obj = {};
+    obj.measurements = {};
+    _(lines).forEach(function(line) {
+        pair = line.split(':');
+        var key = pair[0].trim();
+        var value = pair[1].trim();
+        if(key == "zipcode") {
+            obj[key] = value;
+        } else {
+            obj.measurements[key] = value;
+        }
+    });
+}
+
+app.post('/sms', function(req, res) {
+    console.log(req);
+    console.log(req.body);
+    var report = parse_sms(req.body);
+
+    write_report(report, res);
 });
