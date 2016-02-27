@@ -31,12 +31,13 @@ public class SliderDialog extends DialogFragment {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        int min = getArguments().getInt("min");
         int max = getArguments().getInt("max");
         int unit = getArguments().getInt("unit");
         String units = getArguments().getString("units");
         View layout = inflater.inflate(R.layout.slider_dialog, null);
         seekbar = (SeekBar) layout.findViewById(R.id.seekbar);
+        seekbar.setMax(max);
+        seekbar.incrementProgressBy(unit);
         label = (TextView) layout.findViewById(R.id.seekbar_label);
         label.setText(getArguments().getString("label"));
 

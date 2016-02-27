@@ -56,10 +56,12 @@ class TextReportEntry extends ReportEntry implements ZipcodeDialog.ZipcodeListen
 
     private ZipcodeDialog dialog;
     private FragmentManager fragmentManager;
+    private TextView label;
 
-    TextReportEntry(String key, FragmentManager fragmentManager) {
+    TextReportEntry(String key, FragmentManager fragmentManager, TextView label) {
         super(key);
         this.fragmentManager = fragmentManager;
+        this.label = label;
         Bundle args = new Bundle();
         args.putString("label", key);
         dialog = new ZipcodeDialog();
@@ -73,6 +75,7 @@ class TextReportEntry extends ReportEntry implements ZipcodeDialog.ZipcodeListen
 
     @Override
     public void onTextSubmit(String value) {
+        label.setText(value);
         this.value = value;
     }
 }
@@ -84,7 +87,7 @@ class SliderReportEntry extends ReportEntry implements SliderDialog.SliderListen
     private TextView label;
 
     SliderReportEntry(String key, FragmentManager fragmentManager,
-                      String units, int min, int max, int unit,
+                      String units, int max, int unit,
                       TextView label) {
         super(key);
         this.fragmentManager = fragmentManager;
@@ -92,7 +95,6 @@ class SliderReportEntry extends ReportEntry implements SliderDialog.SliderListen
         Bundle args = new Bundle();
         args.putString("label", key);
         args.putString("units", units);
-        args.putInt("min", min);
         args.putInt("max", max);
         args.putInt("unit", unit);
 

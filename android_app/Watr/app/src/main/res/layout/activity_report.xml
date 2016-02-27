@@ -166,17 +166,35 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/zipcodeItem"
+            <LinearLayout
+
+                android:id="@+id/selectZipcodeItem"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@null"
-                android:gravity="center_vertical|start"
-                android:hint="enter your zipcode"
-                android:paddingLeft="16dp"
-                android:paddingTop="8dp"
-                android:singleLine="true"
-                android:textSize="16sp"/>
+                android:layout_height="72dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/selectZipcodeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="72dp"
+                    android:paddingTop="16dp"
+                    android:text="Zipcode"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/selectZipcodeValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="72dp"
+                    android:paddingTop="4dp"
+                    android:text="01234"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -197,10 +215,10 @@
             android:layout_alignBottom="@+id/frameLayout"
             android:layout_alignEnd="@+id/linearLayout"
             android:layout_gravity="right"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginTop="8dp"
             android:text="Submit"/>
     </FrameLayout>
 

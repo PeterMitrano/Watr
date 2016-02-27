@@ -37,14 +37,15 @@ public class Report {
                 (TextView) activity.findViewById(R.id.selectColorValue));
 
         SliderReportEntry ph = new SliderReportEntry("pH",
-                fragmentManager, "ppm", 0, 14, 1,
+                fragmentManager, "ppm", 14, 1,
                 (TextView) activity.findViewById(R.id.selectpHValue));
 
         SliderReportEntry lead = new SliderReportEntry("Lead",
-                fragmentManager, "ppm", 0, 1000, 1,
+                fragmentManager, "ppm", 1000, 1,
                 (TextView) activity.findViewById(R.id.selectLeadValue));
 
-        zipcodeEntry = new TextReportEntry("Zipcode", fragmentManager);
+        zipcodeEntry = new TextReportEntry("Zipcode", fragmentManager,
+                (TextView) activity.findViewById(R.id.selectZipcodeValue));
 
         LinearLayout smellItem = (LinearLayout) activity.findViewById(R.id.selectSmellItem);
         smellItem.setOnClickListener(smell);
@@ -61,7 +62,7 @@ public class Report {
         LinearLayout leadItem = (LinearLayout) activity.findViewById(R.id.selectLeadItem);
         leadItem.setOnClickListener(lead);
 
-        TextView zipcodeItem = (TextView) activity.findViewById(R.id.zipcodeItem);
+        LinearLayout zipcodeItem = (LinearLayout) activity.findViewById(R.id.selectZipcodeItem);
         zipcodeItem.setOnClickListener(zipcodeEntry);
 
         entries = new ArrayList<>();
