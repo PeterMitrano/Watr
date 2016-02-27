@@ -8,7 +8,7 @@
         "express": "4.13.x",
         "body-parser": "1.15.x",
         "node-geocoder": "3.7.x",
-        "geocoder": "0.2.x"
+        "lodash": "4.5.x"
     },
     "engine": "node >= 0.10.25"
 }

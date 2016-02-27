@@ -5,7 +5,7 @@ import sys
 api = 'http://localhost:3000/'
 reportEndpoint = 'reports/'
 try:
-    api_key_file = open('google_api_key', 'r')
+    api_key_file = open('/home/ubuntu/Watr/web_app/google_api_key', 'r')
 except FileNotFoundError:
     print "API key file not found. Exiting..."
     sys.exit(-1)

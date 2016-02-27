@@ -90,14 +90,12 @@ function generate_content(report) {
         '<div class="measurement-col"></div>'+
         '<div class="measurement-col"></div>';
 
-        console.log(report.measurements);
-
         _.forOwn(report.measurements, function(value, key) {
             contentString += '<div class="measurement-data">'+
                 '<div class="measurement-type measurement-cell">' + key + '</div>' +
-                '<div class="measurement-value measurement-cell">' + value + measurement_unit(key) + '</div>' + 
+                '<div class="measurement-value measurement-cell">' + value + measurement_unit(key.toLowerCase()) + '</div>' + 
                 '<div class="measurement-icon measurement-cell">' + 
-                ' <i class="fa '+ get_icon_class(key, value) + '"></i></div>'+
+                ' <i class="fa '+ get_icon_class(key.toLowerCase(), value) + '"></i></div>'+
                 '</div>';
         });
 
