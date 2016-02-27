@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">Watr</string>
+    <string name="google_app_id">459692865989</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_report">Report</string>
 
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
