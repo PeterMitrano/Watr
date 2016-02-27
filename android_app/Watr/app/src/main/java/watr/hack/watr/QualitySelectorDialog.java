@@ -12,7 +12,7 @@ public class QualitySelectorDialog extends DialogFragment {
     private QualitySelectListener mListener;
 
     public interface QualitySelectListener {
-        public void onItemClick(int index);
+        public void onItemClick(int quality);
     }
 
     @Override
@@ -29,9 +29,11 @@ public class QualitySelectorDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.choose_quality)
-                .setItems(R.array.qualities_array, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+        final String[] qualities = {"Red", "Blue", "Yellow", "Teal", "Clear"};
+        builder.setTitle(R.string.choose_quality)
+                .setItems(qualities, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int quality) {
+                        mListener.onItemClick(quality);
                     }
         });
         return builder.create();

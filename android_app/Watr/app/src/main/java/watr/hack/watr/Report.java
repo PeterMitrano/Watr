@@ -8,14 +8,14 @@ import android.util.Log;
 public class Report {
 
     int quality;
-    String town;
-    String state;
+    String zip;
+    String color;
 
     public String getParameterString() {
         String str = "";
         str += "quality=" + quality + "&";
-        str += "town=" + town + "&";
-        str += "state=" + state;
+        str += "color=" + color + "&";
+        str += "zip=" + zip;
         return str;
     }
 }

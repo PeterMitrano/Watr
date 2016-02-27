@@ -14,49 +14,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:showDividers="middle"
+        android:divider="@drawable/dividor"
         android:id="@+id/linearLayout">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select Water Quality"
-            android:id="@+id/selectQualityButton"/>
-
         <TextView
-            android:id="@+id/townLabel"
+            android:id="@+id/selectColorButton"
             android:layout_width="match_parent"
-            android:layout_height="80px"
-            android:paddingTop="16dp"
-            android:paddingBottom="4dp"
-            android:textSize="12sp"
-            android:text="Enter Town Name:"/>
+            android:layout_height="48dp"
+            android:textSize="16sp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:singleLine="true"
+            android:background="@null"
+            android:gravity="center_vertical|start"
+            android:hint="select water color"/>
 
         <EditText
-            android:id="@+id/townEdit"
+            android:id="@+id/zipEdit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:textSize="16sp"
-            android:paddingTop="4dp"
-            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
             android:singleLine="true"
-            android:layout_marginBottom="8dp"
-            android:hint="Flint"/>
+            android:background="@null"
+            android:gravity="center_vertical|start"
+            android:hint="Enter zip code, like 01609"/>
 
         <TextView
-            android:id="@+id/stateLabel"
+            android:id="@+id/colorView"
             android:layout_width="match_parent"
-            android:layout_height="80px"
-            android:textSize="12sp"
-            android:text="Enter State Name:"/>
-
-        <EditText
-            android:id="@+id/stateEdit"
-            android:layout_width="match_parent"
-            android:singleLine="true"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:textSize="16sp"
-            android:hint="Michigan"/>
-
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:singleLine="true"
+            android:background="@null"
+            android:gravity="center_vertical|start"
+            android:hint="select water color"/>
     </LinearLayout>
 
     <Button
