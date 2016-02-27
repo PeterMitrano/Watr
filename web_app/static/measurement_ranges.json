@@ -11,7 +11,7 @@
         "goal":7000000,
         "limit":7000000,
         "long_unit":"million fibers per liter",
-        "short_unit":"MFL"
+        "short_unit":"mfl"
     },
     "barium":{
         "goal":2,
