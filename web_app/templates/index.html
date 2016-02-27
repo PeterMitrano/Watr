@@ -1,0 +1,19 @@
+<html>
+  <head>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{  url_for('static', filename='style.css') }}" type="text/css"/>
+    <title>Github Ranker</title>
+  </head>
+  <body>
+    <h1>Github Ranker</h1>
+    <div id="main">
+      <form id="form" action="rank">
+        <input id="user" name="user" type="text" placeholder="user" />
+        <input type="submit" />
+        <br>
+        <h2 id="dead" >looks like your profiles is...</h2>
+      </form>
+    </div>
+  </body>
+</html>
