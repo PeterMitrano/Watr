@@ -3,6 +3,7 @@ package watr.hack.watr;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 /**
  * Created by peter on 2/27/16.
@@ -22,9 +23,12 @@ class ChoosableReportEntry extends ReportEntry implements StringSelectorDialog.S
     private String items[];
     private StringSelectorDialog dialog;
     private FragmentManager fragmentManager;
+    private TextView label;
 
-    ChoosableReportEntry(String key, FragmentManager fragmentManager, String items[]) {
+    ChoosableReportEntry(String key, FragmentManager fragmentManager, String items[],
+                         TextView label) {
         super(key);
+        this.label = label;
         this.items = items;
         this.fragmentManager = fragmentManager;
 
@@ -39,6 +43,7 @@ class ChoosableReportEntry extends ReportEntry implements StringSelectorDialog.S
     @Override
     public void onItemClick(int index) {
         value = items[index];
+        label.setText(items[index]);
     }
 
     @Override
@@ -76,11 +81,14 @@ class SliderReportEntry extends ReportEntry implements SliderDialog.SliderListen
 
     private SliderDialog dialog;
     private FragmentManager fragmentManager;
+    private TextView label;
 
-    SliderReportEntry(String key, FragmentManager fragmentManager, String units, int min, int max, int unit) {
+    SliderReportEntry(String key, FragmentManager fragmentManager,
+                      String units, int min, int max, int unit,
+                      TextView label) {
         super(key);
         this.fragmentManager = fragmentManager;
-
+        this.label = label;
         Bundle args = new Bundle();
         args.putString("label", key);
         args.putString("units", units);
@@ -100,6 +108,7 @@ class SliderReportEntry extends ReportEntry implements SliderDialog.SliderListen
 
     @Override
     public void onSliderComplete(int value) {
+        label.setText("" +value);
         this.value = value;
     }
 }

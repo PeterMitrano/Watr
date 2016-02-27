@@ -3,8 +3,7 @@ package watr.hack.watr;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.res.Resources;
-import android.os.Bundle;
-import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -22,26 +21,44 @@ public class Report {
     private ReportEntry zipcodeEntry;
 
     public Report(Activity activity, Resources res, FragmentManager fragmentManager) {
-        ChoosableReportEntry smell = new ChoosableReportEntry("Smell", fragmentManager, res.getStringArray(R.array.smells));
-        ChoosableReportEntry taste = new ChoosableReportEntry("Tastes", fragmentManager, res.getStringArray(R.array.tastes));
-        ChoosableReportEntry color = new ChoosableReportEntry("Colors", fragmentManager, res.getStringArray(R.array.colors));
-        SliderReportEntry ph = new SliderReportEntry("pH", fragmentManager, "ppm", 0, 14, 1);
-        SliderReportEntry lead = new SliderReportEntry("Lead", fragmentManager, "ppm", 0, 1000, 1);
+        ChoosableReportEntry smell = new ChoosableReportEntry("Smell",
+                fragmentManager,
+                res.getStringArray(R.array.smells),
+                (TextView) activity.findViewById(R.id.selectSmellValue));
+
+        ChoosableReportEntry taste = new ChoosableReportEntry("Tastes",
+                fragmentManager,
+                res.getStringArray(R.array.tastes),
+                (TextView) activity.findViewById(R.id.selectTasteValue));
+
+        ChoosableReportEntry color = new ChoosableReportEntry("Colors",
+                fragmentManager,
+                res.getStringArray(R.array.colors),
+                (TextView) activity.findViewById(R.id.selectColorValue));
+
+        SliderReportEntry ph = new SliderReportEntry("pH",
+                fragmentManager, "ppm", 0, 14, 1,
+                (TextView) activity.findViewById(R.id.selectpHValue));
+
+        SliderReportEntry lead = new SliderReportEntry("Lead",
+                fragmentManager, "ppm", 0, 1000, 1,
+                (TextView) activity.findViewById(R.id.selectLeadValue));
+
         zipcodeEntry = new TextReportEntry("Zipcode", fragmentManager);
 
-        TextView smellItem = (TextView) activity.findViewById(R.id.selectSmellItem);
+        LinearLayout smellItem = (LinearLayout) activity.findViewById(R.id.selectSmellItem);
         smellItem.setOnClickListener(smell);
 
-        TextView tasteItem = (TextView) activity.findViewById(R.id.selectTasteItem);
+        LinearLayout tasteItem = (LinearLayout) activity.findViewById(R.id.selectTasteItem);
         tasteItem.setOnClickListener(taste);
 
-        TextView colorItem = (TextView) activity.findViewById(R.id.selectColorItem);
+        LinearLayout colorItem = (LinearLayout) activity.findViewById(R.id.selectColorItem);
         colorItem.setOnClickListener(color);
 
-        TextView phItem = (TextView) activity.findViewById(R.id.selectpHItem);
+        LinearLayout phItem = (LinearLayout) activity.findViewById(R.id.selectpHItem);
         phItem.setOnClickListener(ph);
 
-        TextView leadItem = (TextView) activity.findViewById(R.id.selectLeadItem);
+        LinearLayout leadItem = (LinearLayout) activity.findViewById(R.id.selectLeadItem);
         leadItem.setOnClickListener(lead);
 
         TextView zipcodeItem = (TextView) activity.findViewById(R.id.zipcodeItem);
