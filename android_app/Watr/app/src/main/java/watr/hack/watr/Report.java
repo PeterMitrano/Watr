@@ -3,9 +3,15 @@ package watr.hack.watr;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.res.Resources;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,6 +25,8 @@ public class Report {
 
     private List<ReportEntry> entries;
     private ReportEntry zipcodeEntry;
+    public double longitude;
+    public double latitude;
 
     public Report(Activity activity, Resources res, FragmentManager fragmentManager) {
         ChoosableReportEntry smell = new ChoosableReportEntry("Smell",
@@ -73,6 +81,13 @@ public class Report {
         entries.add(lead);
     }
 
+    public Report(JsonObject json) {
+        JsonObject pos = json.getAsJsonObject("position");
+        JsonArray coords = pos.getAsJsonArray("coordinates");
+        latitude = coords.get(0).getAsDouble();
+        longitude = coords.get(1).getAsDouble();
+    }
+
     /**
      * lead (parts per million)
      * bacteria (organisms per million)
@@ -104,5 +119,4 @@ public class Report {
 
         return data;
     }
-
 }
