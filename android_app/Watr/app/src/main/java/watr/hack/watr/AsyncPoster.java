@@ -43,7 +43,7 @@ public class AsyncPoster extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... params) {
 
         byte[] postData;
-        postData = report.getParameterString().getBytes(StandardCharsets.UTF_8);
+        postData = report.getBody().toString().getBytes(StandardCharsets.UTF_8);
         int postDataLength = postData.length;
 
         String requestURL = "http://httpbin.org/post";
@@ -55,7 +55,7 @@ public class AsyncPoster extends AsyncTask<Void, Void, Boolean> {
             conn.setDoOutput(true);
             conn.setInstanceFollowRedirects(false);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("charset", "utf-8");
             conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             conn.setUseCaches(false);

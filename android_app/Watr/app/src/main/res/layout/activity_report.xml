@@ -43,7 +43,7 @@
             android:hint="Enter zip code, like 01609"/>
 
         <TextView
-            android:id="@+id/colorView"
+            android:id="@+id/selectQualityButton"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:textSize="16sp"
@@ -52,7 +52,8 @@
             android:singleLine="true"
             android:background="@null"
             android:gravity="center_vertical|start"
-            android:hint="select water color"/>
+            android:hint="select quality"
+            android:text="w"/>
     </LinearLayout>
 
     <Button

@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="tastes">
+        <item>Sour</item>
+        <item>Bitter</item>
+        <item>Salty</item>
+        <item>None</item>
+        <item>Firey</item>
+    </string-array>
 
+    <string-array name="smells">
+        <item>Sulfurous</item>
+        <item>Neutral</item>
+        <item>Bad</item>
+        <item>Good</item>
+    </string-array>
+
+    <string-array name="colors">
+        <item>Blue</item>
+        <item>Yellow</item>
+        <item>Green</item>
+        <item>Clear</item>
+        <item>White</item>
+    </string-array>
+
+    <string-array name="qualities">
+        <item>Excellent</item>
+        <item>Good</item>
+        <item>Ok</item>
+        <item>Bad</item>
+        <item>Deadly</item>
+    </string-array>
+
+    <string-array name="empty"></string-array>
 </resources>
