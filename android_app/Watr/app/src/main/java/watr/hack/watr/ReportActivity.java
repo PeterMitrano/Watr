@@ -3,35 +3,33 @@ package watr.hack.watr;
 import android.app.Activity;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
 public class ReportActivity extends Activity implements View.OnClickListener, AsyncPoster.PosterListener {
 
-    EditText zipEdit;
     Report report;
+    Button submitButton;
+    FrameLayout submitFrame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
-        Button createReportButton = (Button) findViewById(R.id.submitReportButton);
-        createReportButton.setOnClickListener(this);
+        submitFrame = (FrameLayout) findViewById(R.id.submit_frame);
+        submitButton = (Button) findViewById(R.id.submit_button);
+        submitButton.setOnClickListener(this);
 
-        TextView selectQualityButton = (TextView) findViewById(R.id.selectColorButton);
-        selectQualityButton.setOnClickListener(this);
-
-        zipEdit = (EditText) findViewById(R.id.zipEdit);
-
-        report = new Report(getResources(), getFragmentManager());
+        report = new Report(this, getResources(), getFragmentManager());
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.submitReportButton){
+        if (v.getId() == R.id.submit_button){
+            submitFrame.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
             AsyncPoster poster = new AsyncPoster(report);
             poster.addListener(this);
             poster.execute();

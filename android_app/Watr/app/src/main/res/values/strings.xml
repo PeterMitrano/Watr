@@ -67,4 +67,8 @@
     <string name="choose_quality_complete">Ok!</string>
     <string name="choose_quality_cancel">Cancel</string>
     <string name="quality_fragment_tag">Select Quality</string>
+    <string name="ok">OK</string>
+    <string name="zipcode">Zipcode</string>
+    <string name="ph">pH</string>
+    <string name="lead">Lead</string>
 </resources>
