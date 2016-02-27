@@ -14,6 +14,7 @@ var db;
 
 app.use(bodyParser.json());
 app.use(bodyParser.text());
+app.use(bodyParser.urlencoded({ extended: false }));
 MongoClient.connect(url, function(err, database) {
     db = database;
 
@@ -63,7 +64,7 @@ app.get('/reports', function(req, res) {
 });
 
 function parse_sms(sms) {
-    var lines = sms.split(/\r?\n/);
+    var lines = sms.toLowerCase().split(';');
     var obj = {};
     obj.measurements = {};
     _(lines).forEach(function(line) {
@@ -76,12 +77,13 @@ function parse_sms(sms) {
             obj.measurements[key] = value;
         }
     });
+
+    return obj;
 }
 
 app.post('/sms', function(req, res) {
-    console.log(req);
     console.log(req.body);
-    var report = parse_sms(req.body);
+    var report = parse_sms(req.body.Body);
 
     write_report(report, res);
 });
