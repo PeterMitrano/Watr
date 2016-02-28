@@ -9,13 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.TextView;
+
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 public class SliderDialog extends DialogFragment {
 
     private SliderListener mListener;
-    private SeekBar seekbar;
+    private DiscreteSeekBar seekbar;
     private TextView label;
 
     public interface SliderListener {
@@ -35,11 +36,10 @@ public class SliderDialog extends DialogFragment {
         int unit = getArguments().getInt("unit");
         String units = getArguments().getString("units");
         View layout = inflater.inflate(R.layout.slider_dialog, null);
-        seekbar = (SeekBar) layout.findViewById(R.id.seekbar);
+        seekbar = (DiscreteSeekBar) layout.findViewById(R.id.seekbar);
         seekbar.setMax(max);
-        seekbar.incrementProgressBy(unit);
         label = (TextView) layout.findViewById(R.id.seekbar_label);
-        label.setText(getArguments().getString("label"));
+        label.setText(getArguments().getString("label") + units);
 
         builder.setView(layout);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

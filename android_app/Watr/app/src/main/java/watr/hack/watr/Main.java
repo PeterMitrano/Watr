@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -52,14 +51,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener, OnM
     }
 
     @Override
-    public void onCompleted(List<Report> reports) {
-        for (Report report : reports) {
-            Log.e("lat", "" + report.latitude);
-            Log.e("lat", "" + report.longitude);
+    public void onCompleted(List<JSONReport> reports) {
+        for (JSONReport report : reports) {
             LatLng latLng = new LatLng(report.latitude, report.longitude);
             map.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title("Marker"));
+                    .position(latLng));
         }
     }
 }

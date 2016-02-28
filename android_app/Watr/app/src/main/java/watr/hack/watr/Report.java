@@ -25,8 +25,6 @@ public class Report {
 
     private List<ReportEntry> entries;
     private ReportEntry zipcodeEntry;
-    public double longitude;
-    public double latitude;
 
     public Report(Activity activity, Resources res, FragmentManager fragmentManager) {
         ChoosableReportEntry smell = new ChoosableReportEntry("Smell",
@@ -45,11 +43,15 @@ public class Report {
                 (TextView) activity.findViewById(R.id.selectColorValue));
 
         SliderReportEntry ph = new SliderReportEntry("pH",
-                fragmentManager, "ppm", 14, 1,
+                fragmentManager, "", 14, 1,
                 (TextView) activity.findViewById(R.id.selectpHValue));
 
+        SliderReportEntry bacteria = new SliderReportEntry("Bacteria",
+                fragmentManager, " parts per billion", 100, 1,
+                (TextView) activity.findViewById(R.id.selectLeadValue));
+
         SliderReportEntry lead = new SliderReportEntry("Lead",
-                fragmentManager, "ppm", 1000, 1,
+                fragmentManager, " parts per billion", 20, 1,
                 (TextView) activity.findViewById(R.id.selectLeadValue));
 
         zipcodeEntry = new TextReportEntry("Zipcode", fragmentManager,
@@ -70,6 +72,9 @@ public class Report {
         LinearLayout leadItem = (LinearLayout) activity.findViewById(R.id.selectLeadItem);
         leadItem.setOnClickListener(lead);
 
+        LinearLayout bacteriaItem = (LinearLayout) activity.findViewById(R.id.selectBacteriaItem);
+        bacteriaItem.setOnClickListener(bacteria);
+
         LinearLayout zipcodeItem = (LinearLayout) activity.findViewById(R.id.selectZipcodeItem);
         zipcodeItem.setOnClickListener(zipcodeEntry);
 
@@ -79,13 +84,6 @@ public class Report {
         entries.add(color);
         entries.add(ph);
         entries.add(lead);
-    }
-
-    public Report(JsonObject json) {
-        JsonObject pos = json.getAsJsonObject("position");
-        JsonArray coords = pos.getAsJsonArray("coordinates");
-        latitude = coords.get(0).getAsDouble();
-        longitude = coords.get(1).getAsDouble();
     }
 
     /**

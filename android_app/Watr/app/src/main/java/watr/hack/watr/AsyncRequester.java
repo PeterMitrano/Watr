@@ -20,14 +20,14 @@ import java.util.List;
 /**
  * Created by peter on 2/26/16.
  */
-public class AsyncRequester extends AsyncTask<Void, Void, List<Report>> {
+public class AsyncRequester extends AsyncTask<Void, Void, List<JSONReport>> {
 
     private String responseString;
     private List<RequesterListener> listeners;
 
     public interface RequesterListener {
 
-        public void onCompleted(List<Report> report);
+        public void onCompleted(List<JSONReport> report);
 
     }
 
@@ -40,7 +40,7 @@ public class AsyncRequester extends AsyncTask<Void, Void, List<Report>> {
     }
 
     @Override
-    protected List<Report> doInBackground(Void... params) {
+    protected List<JSONReport> doInBackground(Void... params) {
 
 
         try {
@@ -68,9 +68,9 @@ public class AsyncRequester extends AsyncTask<Void, Void, List<Report>> {
             JsonParser parser = new JsonParser();
             JsonArray json = parser.parse(response.toString()).getAsJsonArray();
 
-            List<Report> reports = new ArrayList<>();
+            List<JSONReport> reports = new ArrayList<>();
             for (int i=0;i<json.size();i++){
-                reports.add(new Report(json.get(i).getAsJsonObject()));
+                reports.add(new JSONReport(json.get(i).getAsJsonObject()));
             }
             return reports;
         } catch (MalformedURLException e) {
@@ -82,7 +82,7 @@ public class AsyncRequester extends AsyncTask<Void, Void, List<Report>> {
         return null;
     }
 
-    public void onPostExecute(List<Report> reports) {
+    public void onPostExecute(List<JSONReport> reports) {
         if (reports == null) {
             Log.e("post execute", "fail!");
         }

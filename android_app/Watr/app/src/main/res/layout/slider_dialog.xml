@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -17,12 +18,10 @@
             android:id="@+id/seekbar_label"
             android:layout_gravity="left|top"/>
 
-        <SeekBar
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/seekbar"
-            android:layout_margin="16dp"
-            android:layout_gravity="left|center_vertical"/>
+            android:id="@+id/seekbar"/>
 
     </LinearLayout>
 </LinearLayout>

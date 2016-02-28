@@ -46,7 +46,7 @@ public class AsyncPoster extends AsyncTask<Void, Void, Boolean> {
         postData = report.getBody().toString().getBytes(StandardCharsets.UTF_8);
         int postDataLength = postData.length;
 
-        String requestURL = "http://httpbin.org/post";
+        String requestURL = "http://ec2-54-175-180-102.compute-1.amazonaws.com:3000/reports";
 
         try {
             URL url = new URL(requestURL);

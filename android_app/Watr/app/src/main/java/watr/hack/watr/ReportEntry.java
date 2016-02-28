@@ -110,8 +110,9 @@ class SliderReportEntry extends ReportEntry implements SliderDialog.SliderListen
 
     @Override
     public void onSliderComplete(int value) {
-        label.setText("" +value);
-        this.value = value;
+        double v = value/4000.0;
+        label.setText("" +v);
+        this.value = v;
     }
 }
 
